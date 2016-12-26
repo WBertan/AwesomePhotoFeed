@@ -9,10 +9,14 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.wbertan.awesomephotofeed.BR;
 import com.wbertan.awesomephotofeed.R;
@@ -28,7 +32,7 @@ import com.wbertan.awesomephotofeed.props.PropsBroadcastReceiver;
  * Created by william.bertan on 25/12/2016.
  */
 
-public class FragmentMain extends FragmentGeneric implements AdapterGeneric.ViewHolderAction {
+public class FragmentMain extends FragmentGeneric implements AdapterGeneric.ViewHolderAction, TextView.OnEditorActionListener {
     @Override
     public String getFragmentTitle() {
         return getString(R.string.fragment_main_title);
@@ -51,13 +55,11 @@ public class FragmentMain extends FragmentGeneric implements AdapterGeneric.View
 
         AdapterGeneric<Entry> adapter = new AdapterGeneric<>(R.layout.adapter_photo_item, BR.photo, this);
         recyclerView.setAdapter(adapter);
-        try {
-            showProgress();
-            new ControllerFlickr_GetFeed().execute(new FeedDetailsObserver(), Params.EMPTY_PARAM);
-        } catch (Exception e) {
-            e.printStackTrace();
-            dismissProgress();
-        }
+
+        EditText editTextSearch = (EditText) getView().findViewById(R.id.editTextSearch);
+        editTextSearch.setOnEditorActionListener(this);
+
+        getFeed();
     }
 
     private int getSpanCount() {
@@ -104,6 +106,22 @@ public class FragmentMain extends FragmentGeneric implements AdapterGeneric.View
         getActivity().sendBroadcast(intent);
     }
 
+    void getFeed() {
+        try {
+            showProgress();
+            EditText editTextSearch = (EditText) getView().findViewById(R.id.editTextSearch);
+            String searchText = editTextSearch.getText().toString();
+            Params params = Params.getInstance();
+            if(searchText.trim().length() > 0) {
+                params.put("tags", searchText.trim().replace(" ", ","));
+            }
+            new ControllerFlickr_GetFeed().execute(new FeedDetailsObserver(), params);
+        } catch (Exception e) {
+            e.printStackTrace();
+            dismissProgress();
+        }
+    }
+
     private final class FeedDetailsObserver extends DefaultObserver<Feed> {
         @Override
         public void onComplete() {
@@ -121,5 +139,15 @@ public class FragmentMain extends FragmentGeneric implements AdapterGeneric.View
             RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycleViewPhotos);
             ((AdapterGeneric)recyclerView.getAdapter()).addAll(feed.getItems(), true);
         }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        getFeed();
+        InputMethodManager inputMethodManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        if(getActivity().getCurrentFocus() != null) {
+            inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getApplicationWindowToken(), 0);
+        }
+        return false;
     }
 }

@@ -14,13 +14,9 @@
 
     <!-- Fragments -->
     <string name="fragment_exit_title">Exit</string>
-    <string name="fragment_login_title">Login</string>
+    <string name="fragment_splash_title">Preparing everything!</string>
     <string name="fragment_main_title">Let\'s explore!</string>
     <string name="fragment_photo_info_title">Photo Info!</string>
     <string name="fragment_exit_good_bye_title">Good Bye friend!</string>
     <string name="fragment_exit_good_bye_message">Come back soon to check the new photos!</string>
-    <string name="fragment_login_welcome_title">Welcome dear friend!</string>
-    <string name="fragment_login_welcome_message">Do you want to explore?</string>
-    <string name="fragment_login_button_sign_in">I\'m already an explorer! (Sign In)</string>
-    <string name="fragment_login_button_sign_up">I want to be one! (Sign Up)</string>
 </resources>

@@ -8,6 +8,21 @@
     android:clickable="true"
     android:background="@color/apptheme_fragmentBackground">
 
+    <EditText
+        android:id="@+id/editTextSearch"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:hint="Search"
+        android:maxLines="1"
+        android:inputType="textFilter"
+        android:imeActionLabel="EXPLORE"
+        android:imeOptions="actionSearch"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleViewPhotos"
         android:layout_width="0dp"
@@ -15,5 +30,5 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/editTextSearch"/>
 </android.support.constraint.ConstraintLayout>

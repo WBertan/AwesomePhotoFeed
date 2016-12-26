@@ -19,13 +19,13 @@ import retrofit2.Retrofit;
  */
 
 public class RepositoryFlickr extends RepositoryGeneric {
-    public Observable<Feed> getFeed() {
+    public Observable<Feed> getFeed(final String aTags) {
         return Observable.create(new ObservableOnSubscribe<Feed>() {
             @Override
             public void subscribe(ObservableEmitter<Feed> observableEmitter) throws Exception {
                 Retrofit retrofit = getRetrofit(PropsRequestUrl.FLICKR);
                 ServiceFlickr serviceFlickr = retrofit.create(ServiceFlickr.class);
-                Call<Feed> callFlickr = serviceFlickr.getFeed();
+                Call<Feed> callFlickr = serviceFlickr.getFeed(aTags);
                 try {
                     observableEmitter.onNext(callFlickr.execute().body());
                     observableEmitter.onComplete();

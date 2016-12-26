@@ -20,6 +20,6 @@ public class ControllerFlickr_GetFeed extends ControllerGeneric {
 
     @Override
     protected Observable buildInteractorObservable(Params aParams) throws Exception {
-        return mRepositoryFlickr.getFeed();
+        return mRepositoryFlickr.getFeed(aParams.get("tags", null, String.class));
     }
 }
