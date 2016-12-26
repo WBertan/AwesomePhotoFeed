@@ -9,7 +9,7 @@
     android:background="@color/apptheme_fragmentBackground">
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycleViewOdds"
+        android:id="@+id/recycleViewPhotos"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintRight_toRightOf="parent"

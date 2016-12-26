@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
-        <variable name="photo" type="com.wbertan.awesomephotofeed.model.flickr.Photo"/>
+        <variable name="photo" type="com.wbertan.awesomephotofeed.model.flickr.Entry"/>
     </data>
     <LinearLayout
         android:layout_width="@dimen/card_view_width"

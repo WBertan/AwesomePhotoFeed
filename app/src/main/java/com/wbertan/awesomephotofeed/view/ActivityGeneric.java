@@ -66,6 +66,7 @@ public abstract class ActivityGeneric extends AppCompatActivity implements Fragm
         intentFilter.addAction(PropsBroadcastReceiver.SIGN_IN);
         intentFilter.addAction(PropsBroadcastReceiver.SIGN_UP);
         intentFilter.addAction(PropsBroadcastReceiver.LOGIN);
+        intentFilter.addAction(PropsBroadcastReceiver.SHOW_PHOTO_INFO);
         mMainBroadcastReceiver = new MainBroadcastReceiver();
         registerReceiver(mMainBroadcastReceiver, intentFilter);
     }

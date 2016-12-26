@@ -12,7 +12,7 @@ public class Feed {
     private String description;
     private Date modified;
     private String generator;
-    private List<Photo> items;
+    private List<Entry> items;
 
     public Feed() {}
 
@@ -56,11 +56,11 @@ public class Feed {
         this.generator = generator;
     }
 
-    public List<Photo> getItems() {
+    public List<Entry> getItems() {
         return items;
     }
 
-    public void setItems(List<Photo> items) {
+    public void setItems(List<Entry> items) {
         this.items = items;
     }
 }

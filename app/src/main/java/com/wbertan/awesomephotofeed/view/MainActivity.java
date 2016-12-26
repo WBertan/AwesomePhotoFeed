@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.wbertan.awesomephotofeed.fragments.FragmentGeneric;
 import com.wbertan.awesomephotofeed.fragments.FragmentLogin;
 import com.wbertan.awesomephotofeed.fragments.FragmentMain;
+import com.wbertan.awesomephotofeed.fragments.FragmentPhotoInfo;
 import com.wbertan.awesomephotofeed.props.PropsBroadcastReceiver;
 /**
  * Created by william.bertan on 25/12/2016.
@@ -28,6 +29,8 @@ public class MainActivity extends ActivityGeneric {
         } else if(aIntent.getAction().equals(PropsBroadcastReceiver.LOGIN)) {
             removeAllFragments();
             return new FragmentMain();
+        } else if(aIntent.getAction().equals(PropsBroadcastReceiver.SHOW_PHOTO_INFO)) {
+            return new FragmentPhotoInfo();
         }
         return null;
     }

@@ -11,6 +11,14 @@
         <item name="android:layout_marginBottom">5dp</item>
     </style>
 
+    <style name="DividerVerticalAppTheme">
+        <item name="android:layout_width">2dp</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/apptheme_colorAccent</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
   <style name="ButtonAppTheme" parent="android:Widget.Holo.Light.Button">
 	  <item name="android:background">@drawable/apptheme_btn_default_holo_light</item>
       <item name="android:minHeight">48dip</item>
