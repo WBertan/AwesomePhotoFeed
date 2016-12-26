@@ -14,10 +14,13 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.wbertan.awesomephotofeed.BR;
 import com.wbertan.awesomephotofeed.R;
+import com.wbertan.awesomephotofeed.adapter.AdapterGeneric;
 import com.wbertan.awesomephotofeed.controller.flickr.ControllerFlickr_GetFeed;
 import com.wbertan.awesomephotofeed.interactor.DefaultObserver;
 import com.wbertan.awesomephotofeed.model.flickr.Feed;
+import com.wbertan.awesomephotofeed.model.flickr.Photo;
 
 /**
  * Created by william.bertan on 25/12/2016.
@@ -44,12 +47,8 @@ public class FragmentMain extends FragmentGeneric {
         RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycleViewOdds);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getSpanCount()));
 
-//        AdapterGeneric<Bet> adapter = new AdapterGeneric<>(R.layout.adapter_bet_item, BR.bet);
-//        recyclerView.setAdapter(adapter);
-
-//        showProgress();
-//        ControllerBet.getInstance().getBets(this, 0);
-//        ControllerBet.getInstance().getFavoriteBets(this, 1);
+        AdapterGeneric<Photo> adapter = new AdapterGeneric<>(R.layout.adapter_photo_item, BR.photo);
+        recyclerView.setAdapter(adapter);
         try {
             showProgress();
             new ControllerFlickr_GetFeed().execute(new FeedDetailsObserver(), null);
@@ -100,6 +99,8 @@ public class FragmentMain extends FragmentGeneric {
 
         @Override
         public void onNext(Feed feed) {
+            RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycleViewOdds);
+            ((AdapterGeneric)recyclerView.getAdapter()).addAll(feed.getItems(), true);
             Toast.makeText(getActivity(), "Recebeu!", Toast.LENGTH_SHORT).show();
         }
     }

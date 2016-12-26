@@ -2,12 +2,14 @@ package com.wbertan.awesomephotofeed.repository;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.wbertan.awesomephotofeed.json.DateDeserializer;
 import com.wbertan.awesomephotofeed.model.flickr.Author;
 import com.wbertan.awesomephotofeed.model.flickr.Feed;
 import com.wbertan.awesomephotofeed.props.PropsRequestUrl;
 import com.wbertan.awesomephotofeed.rest.services.ServiceFlickr;
 
 import java.io.IOException;
+import java.util.Date;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -26,7 +28,7 @@ public class RepositoryFlickr extends RepositoryGeneric {
             @Override
             public void subscribe(ObservableEmitter<Feed> observableEmitter) throws Exception {
                 Gson gson = new GsonBuilder()
-                        .setDateFormat("yyyy-mm-dd'T'hh:MM:ss'Z'")
+                        .registerTypeAdapter(Date.class, new DateDeserializer())
                         .create();
                 Retrofit retrofit = new Retrofit.Builder()
                         .baseUrl(PropsRequestUrl.FLICKR)

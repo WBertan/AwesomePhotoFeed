@@ -117,8 +117,10 @@ public abstract class ActivityGeneric extends AppCompatActivity implements Fragm
         if(listFragments != null && !listFragments.isEmpty()) {
             FragmentGeneric fragmentGeneric = null;
             for(int counter = listFragments.size() - 1; counter > 0; counter--) {
-                fragmentGeneric = (FragmentGeneric) listFragments.get(counter);
-                if(fragmentGeneric != null) break;
+                if(listFragments.get(counter) instanceof FragmentGeneric) {
+                    fragmentGeneric = (FragmentGeneric) listFragments.get(counter);
+                    if (fragmentGeneric != null) break;
+                }
             }
             if(fragmentGeneric != null && getSupportActionBar() != null ) {
                 getSupportActionBar().setTitle(fragmentGeneric.getFragmentTitle());

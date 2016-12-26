@@ -1,5 +1,14 @@
 package com.wbertan.awesomephotofeed.model.flickr;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+import android.databinding.BindingAdapter;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
+import com.wbertan.awesomephotofeed.R;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
 
@@ -7,18 +16,38 @@ import java.util.Map;
  * Created by william.bertan on 25/12/2016.
  */
 
-public class Photo {
+public class Photo extends BaseObservable {
     private String title;
     private String link;
     private Map<String, String> media;
     private Date date_taken;
     private String description;
     private Date published;
+
     private String author;
     private String author_id;
     private String tags;
 
     public Photo() {}
+
+    @Bindable
+    public String getFormattedPublished() {
+        return SimpleDateFormat.getDateTimeInstance().format(published);
+    }
+
+    @BindingAdapter({"android:src"})
+    public static void setImageViewResource(ImageView imageView, Map<String, String> mapMedia) {
+        if(mapMedia == null || mapMedia.isEmpty()) {
+            imageView.setImageResource(R.mipmap.logo_awesome_photo_feed_icon);
+        } else {
+            Glide.with(imageView.getContext())
+                 .load(mapMedia.values().toArray()[0])
+                 .centerCrop()
+                 .placeholder(R.mipmap.logo_awesome_photo_feed_icon)
+                 .crossFade()
+                 .into(imageView);
+        }
+    }
 
     public String getTitle() {
         return title;
