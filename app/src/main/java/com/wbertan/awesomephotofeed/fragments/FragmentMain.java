@@ -12,8 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.wbertan.awesomephotofeed.R;
+import com.wbertan.awesomephotofeed.controller.flickr.ControllerFlickr_GetFeed;
+import com.wbertan.awesomephotofeed.interactor.DefaultObserver;
+import com.wbertan.awesomephotofeed.model.flickr.Feed;
 
 /**
  * Created by william.bertan on 25/12/2016.
@@ -46,6 +50,13 @@ public class FragmentMain extends FragmentGeneric {
 //        showProgress();
 //        ControllerBet.getInstance().getBets(this, 0);
 //        ControllerBet.getInstance().getFavoriteBets(this, 1);
+        try {
+            showProgress();
+            new ControllerFlickr_GetFeed().execute(new FeedDetailsObserver(), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            dismissProgress();
+        }
     }
 
     private int getSpanCount() {
@@ -71,6 +82,25 @@ public class FragmentMain extends FragmentGeneric {
             }
             RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycleViewOdds);
             recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), getSpanCount()));
+        }
+    }
+
+    private final class FeedDetailsObserver extends DefaultObserver<Feed> {
+
+        @Override
+        public void onComplete() {
+            dismissProgress();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            dismissProgress();
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onNext(Feed feed) {
+            Toast.makeText(getActivity(), "Recebeu!", Toast.LENGTH_SHORT).show();
         }
     }
 }
