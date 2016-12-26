@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Generated with http://android-holo-colors.com -->
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="DividerAppTheme">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">2dp</item>
+        <item name="android:background">@color/apptheme_colorAccent</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:layout_marginBottom">5dp</item>
+    </style>
+
+  <style name="ButtonAppTheme" parent="android:Widget.Holo.Light.Button">
+	  <item name="android:background">@drawable/apptheme_btn_default_holo_light</item>
+      <item name="android:minHeight">48dip</item>
+      <item name="android:minWidth">64dip</item>
+      <item name="android:textColor">@color/white</item>
+      <item name="android:textAllCaps">true</item>
+  </style>
+
+    <style name="TextViewAppTheme" parent="android:Widget.TextView">
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+  <style name="ImageButtonAppTheme" parent="android:Widget.Holo.Light.ImageButton">
+	  <item name="android:background">@drawable/apptheme_btn_default_holo_light</item>
+  </style>
+
+  <!--<style name="ProgressBarAppTheme" parent="android:Widget.Holo.Light.ProgressBar.Horizontal">-->
+      <!--<item name="android:progressDrawable">@drawable/apptheme_progress_horizontal_holo_light</item>-->
+      <!--<item name="android:indeterminateDrawable">@drawable/apptheme_progress_indeterminate_horizontal_holo_light</item>-->
+  <!--</style>-->
+
+</resources>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="apptheme_colorPrimary">#006ADD</color>
+    <color name="apptheme_colorPrimaryDark">#004999</color>
+    <color name="apptheme_colorAccent">#FF1981</color>
+    <drawable name="apptheme_background">@drawable/tile_photo_camera_pattern</drawable>
+
+    <color name="apptheme_dialogInsideBackground">#a0C7C7C7</color>
+    <color name="apptheme_dialogOutsideBackground">#a0FF1981</color>
+    <color name="apptheme_textColorHighlight">#a0FF1981</color>
+    <color name="apptheme_fragmentBackground">#a0006ADD</color>
+    <color name="apptheme_toolbarBackground">@color/apptheme_colorPrimary</color>
+    <drawable name="apptheme_selectedItemList">@color/apptheme_dialogInsideBackground</drawable>
+</resources>
