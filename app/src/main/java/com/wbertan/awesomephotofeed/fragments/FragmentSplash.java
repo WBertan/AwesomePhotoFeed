@@ -54,7 +54,9 @@ public class FragmentSplash extends FragmentGeneric {
                                 getActivity().sendBroadcast(prepareAction(PropsBroadcastReceiver.LOGIN));
                             }
                         });
-                        getActivity().sendBroadcast(prepareAction(PropsBroadcastReceiver.LOGIN));
+                        if(getActivity() != null) {
+                            getActivity().sendBroadcast(prepareAction(PropsBroadcastReceiver.LOGIN));
+                        }
                     }
                     @Override
                     public void onAnimationCancel(Animator animator) { /* do nothing */ }

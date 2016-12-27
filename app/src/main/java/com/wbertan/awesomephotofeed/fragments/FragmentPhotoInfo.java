@@ -1,14 +1,24 @@
 package com.wbertan.awesomephotofeed.fragments;
 
+import android.Manifest;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -38,7 +48,7 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  * Created by william.bertan on 25/12/2016.
  */
 
-public class FragmentPhotoInfo extends FragmentGeneric {
+public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickListener {
     @Override
     public String getFragmentTitle() {
         return getString(R.string.fragment_photo_info_title);
@@ -67,6 +77,13 @@ public class FragmentPhotoInfo extends FragmentGeneric {
         String photoLink = bundleArgs.getString("photo_link");
         String photoTitle = bundleArgs.getString("photo_title");
         String photoDescription = bundleArgs.getString("photo_description");
+
+        Button buttonShare = (Button) getView().findViewById(R.id.buttonShare);
+        Button buttonSave = (Button) getView().findViewById(R.id.buttonSave);
+        Button buttonOpen = (Button) getView().findViewById(R.id.buttonOpen);
+        buttonShare.setOnClickListener(this);
+        buttonSave.setOnClickListener(this);
+        buttonOpen.setOnClickListener(this);
 
         ImageView imageView = (ImageView) getView().findViewById(R.id.imageViewPhoto);
         Glide.with(imageView.getContext())
@@ -187,6 +204,93 @@ public class FragmentPhotoInfo extends FragmentGeneric {
             adapter.add(new PhotoInfo("Photo Original Format", photoData.getOriginalformat()));
             adapter.add(new PhotoInfo("Photo Title", photoData.getTitle()));
             adapter.add(new PhotoInfo("Photo Description", photoData.getDescription()));
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case 10: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    saveImageToGallery(requestCode);
+                } else {
+                    Button buttonSave = (Button) getView().findViewById(R.id.buttonSave);
+                    buttonSave.setVisibility(View.INVISIBLE);
+                }
+                break;
+            }
+            case 20: {
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    shareImage();
+                } else {
+                    Button buttonShare = (Button) getView().findViewById(R.id.buttonShare);
+                    buttonShare.setVisibility(View.INVISIBLE);
+                }
+                break;
+            }
+        }
+    }
+
+    String saveImageToGallery(int aRequestCode) {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            //requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, aRequestCode);
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, aRequestCode);
+            return null;
+        }
+        ImageView imageView = (ImageView) getView().findViewById(R.id.imageViewPhoto);
+        imageView.setDrawingCacheEnabled(true);
+        Bitmap bitmapImageView = imageView.getDrawingCache();
+        String returnInsertImage = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmapImageView, String.valueOf(System.currentTimeMillis()), null);
+        if(aRequestCode == 10) {
+            DialogUtil.instantiate(getActivity()).withTitle(":)").withMessage("Image saved with success to your gallery!").show();
+        }
+        return returnInsertImage;
+    }
+
+    void shareImage() {
+        String returnInsertImage = saveImageToGallery(20);
+        if(returnInsertImage == null) {
+            return;
+        }
+        Uri imageUri = Uri.parse(returnInsertImage);
+        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        shareIntent.putExtra(Intent.EXTRA_STREAM,imageUri);
+        shareIntent.putExtra(Intent.EXTRA_TEXT,"Hey i have attached this image");
+        Intent chooser=Intent.createChooser(shareIntent,"Send Image");
+        try {
+            startActivity(chooser);
+        } catch (ActivityNotFoundException ex) {
+            ex.printStackTrace();
+            DialogUtil.instantiate(getActivity()).withMessage("Sorry, can't find any app to solve this action!").show();
+            Button buttonShare = (Button) getView().findViewById(R.id.buttonShare);
+            buttonShare.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    void openImageInBrowser() {
+        Bundle bundleArgs = getArguments();
+        String photoLink = bundleArgs.getString("photo_link");
+        Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(photoLink));
+        try {
+            startActivity(launchBrowser);
+        } catch (ActivityNotFoundException ex) {
+            ex.printStackTrace();
+            DialogUtil.instantiate(getActivity()).withMessage("Sorry, can't find any app to solve this action!").show();
+            Button buttonOpen = (Button) getView().findViewById(R.id.buttonOpen);
+            buttonOpen.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(view.getId() == R.id.buttonSave) {
+            saveImageToGallery(10);
+        } else if(view.getId() == R.id.buttonShare) {
+            shareImage();
+        } else if(view.getId() == R.id.buttonOpen) {
+            openImageInBrowser();
         }
     }
 }
