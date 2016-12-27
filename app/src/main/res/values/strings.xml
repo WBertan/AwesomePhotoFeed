@@ -10,7 +10,8 @@
     <string name="dialog_default_button_text_yes">Yes</string>
     <string name="dialog_default_button_text_no">No</string>
     <string name="dialog_default_button_text_cancel">Cancel</string>
-    <string name="dialog_default_title">:(</string>
+    <string name="dialog_default_title_fail">:(</string>
+    <string name="dialog_default_title_success">:)</string>
 
     <!-- Fragments -->
     <string name="fragment_exit_title">Exit</string>
@@ -18,5 +19,30 @@
     <string name="fragment_main_title">Let\'s explore!</string>
     <string name="fragment_photo_info_title">Photo Info!</string>
     <string name="fragment_exit_good_bye_title">Good Bye friend!</string>
+
     <string name="fragment_exit_good_bye_message">Come back soon to check the new photos!</string>
+
+    <string name="fragment_photo_info_dialog_message_no_app_action">Sorry, can\'t find any app to solve this action!</string>
+    <string name="fragment_photo_info_share_text">Look at this photo!</string>
+    <string name="fragment_photo_info_share_chooser_text">Send Image</string>
+    <string name="fragment_photo_info_save_success">Image saved with success to your gallery!</string>
+    <string name="fragment_photo_info_dialog_message_problem_loading_photo">Problem in loading photo!</string>
+    <string name="fragment_photo_info_label_author_id">Author ID</string>
+    <string name="fragment_photo_info_label_author_username">Author Username</string>
+    <string name="fragment_photo_info_label_author_realname">Author Realname</string>
+    <string name="fragment_photo_info_label_author_photos_url">Author Photos URL</string>
+    <string name="fragment_photo_info_label_author_profile_url">Author Profile URL</string>
+    <string name="fragment_photo_info_label_photo_id">Photo ID</string>
+    <string name="fragment_photo_info_label_photo_secret">Photo Secret</string>
+    <string name="fragment_photo_info_label_photo_server">Photo Server</string>
+    <string name="fragment_photo_info_label_photo_date_uploaded">Photo Date Uploaded</string>
+    <string name="fragment_photo_info_label_photo_original_secret">Photo Original Secret</string>
+    <string name="fragment_photo_info_label_photo_original_format">Photo Original Format</string>
+    <string name="fragment_photo_info_label_photo_title">Photo Title</string>
+    <string name="fragment_photo_info_label_photo_description">Photo Description</string>
+    <string name="fragment_photo_info_button_save_text">Save</string>
+    <string name="fragment_photo_info_button_share_text">Share</string>
+    <string name="fragment_photo_info_button_open_text">Open</string>
+
+    <string name="fragment_main_search_hint">Search</string>
 </resources>

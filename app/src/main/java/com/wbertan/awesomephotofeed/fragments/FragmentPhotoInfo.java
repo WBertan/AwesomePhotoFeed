@@ -49,6 +49,9 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 
 public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickListener {
+    public static final int REQUEST_CODE_PERMISSION_WRITE_ON_EXTERNAL_SAVE = 10;
+    public static final int REQUEST_CODE_PERMISSION_WRITE_ON_EXTERNAL_SHARE = 20;
+
     @Override
     public String getFragmentTitle() {
         return getString(R.string.fragment_photo_info_title);
@@ -69,7 +72,7 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
 
         Bundle bundleArgs = getArguments();
         if(bundleArgs == null || !bundleArgs.containsKey("photo_id") || !bundleArgs.containsKey("photo_link")) {
-            DialogUtil.instantiate(getActivity()).withMessage("Problem in loading photo!").show();
+            DialogUtil.instantiate(getActivity()).withMessage(getString(R.string.fragment_photo_info_dialog_message_problem_loading_photo)).show();
             return;
         }
         String photoId = bundleArgs.getString("photo_id");
@@ -106,6 +109,9 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
                 })
                 .into(imageView);
 
+        if(getView() == null) {
+            return;
+        }
         RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycleViewPhotoInfo);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -168,14 +174,17 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
 
         @Override
         public void onNext(PersonResponse personResponse) {
+            if(getView() == null) {
+                return;
+            }
             Person person = personResponse.getPerson();
             RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycleViewPhotoInfo);
             AdapterGeneric<PhotoInfo> adapter = (AdapterGeneric<PhotoInfo>) recyclerView.getAdapter();
-            adapter.add(new PhotoInfo("Author ID", person.getId()));
-            adapter.add(new PhotoInfo("Author Username", person.getUsername()));
-            adapter.add(new PhotoInfo("Author Realname", person.getRealname()));
-            adapter.add(new PhotoInfo("Author Photos URL", person.getPhotosurl()));
-            adapter.add(new PhotoInfo("Author Profile URL", person.getProfileurl()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_author_id), person.getId()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_author_username), person.getUsername()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_author_realname), person.getRealname()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_author_photos_url), person.getPhotosurl()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_author_profile_url), person.getProfileurl()));
         }
     }
 
@@ -193,25 +202,31 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
 
         @Override
         public void onNext(PhotoResponse photoResponse) {
+            if(getView() == null) {
+                return;
+            }
             Photo photoData = photoResponse.getPhoto();
             RecyclerView recyclerView = (RecyclerView) getView().findViewById(R.id.recycleViewPhotoInfo);
             AdapterGeneric<PhotoInfo> adapter = (AdapterGeneric<PhotoInfo>) recyclerView.getAdapter();
-            adapter.add(new PhotoInfo("Photo ID", photoData.getId()));
-            adapter.add(new PhotoInfo("Photo Secret", photoData.getSecret()));
-            adapter.add(new PhotoInfo("Photo Server", photoData.getServer()));
-            adapter.add(new PhotoInfo("Photo Date Uploaded", SimpleDateFormat.getDateTimeInstance().format(new Date(photoData.getDateuploaded()))));
-            adapter.add(new PhotoInfo("Photo Original Secret", photoData.getOriginalsecret()));
-            adapter.add(new PhotoInfo("Photo Original Format", photoData.getOriginalformat()));
-            adapter.add(new PhotoInfo("Photo Title", photoData.getTitle()));
-            adapter.add(new PhotoInfo("Photo Description", photoData.getDescription()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_photo_id), photoData.getId()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_photo_secret), photoData.getSecret()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_photo_server), photoData.getServer()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_photo_date_uploaded), SimpleDateFormat.getDateTimeInstance().format(new Date(photoData.getDateuploaded()))));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_photo_original_secret), photoData.getOriginalsecret()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_photo_original_format), photoData.getOriginalformat()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_photo_title), photoData.getTitle()));
+            adapter.add(new PhotoInfo(getString(R.string.fragment_photo_info_label_photo_description), photoData.getDescription()));
         }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if(getView() == null) {
+            return;
+        }
         switch (requestCode) {
-            case 10: {
+            case REQUEST_CODE_PERMISSION_WRITE_ON_EXTERNAL_SAVE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     saveImageToGallery(requestCode);
                 } else {
@@ -220,7 +235,7 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
                 }
                 break;
             }
-            case 20: {
+            case REQUEST_CODE_PERMISSION_WRITE_ON_EXTERNAL_SHARE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     shareImage();
                 } else {
@@ -233,8 +248,10 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
     }
 
     String saveImageToGallery(int aRequestCode) {
+        if(getView() == null) {
+            return null;
+        }
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            //requestPermissions(getActivity(), new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, aRequestCode);
             requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, aRequestCode);
             return null;
         }
@@ -242,14 +259,17 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
         imageView.setDrawingCacheEnabled(true);
         Bitmap bitmapImageView = imageView.getDrawingCache();
         String returnInsertImage = MediaStore.Images.Media.insertImage(getActivity().getContentResolver(), bitmapImageView, String.valueOf(System.currentTimeMillis()), null);
-        if(aRequestCode == 10) {
-            DialogUtil.instantiate(getActivity()).withTitle(":)").withMessage("Image saved with success to your gallery!").show();
+        if(aRequestCode == REQUEST_CODE_PERMISSION_WRITE_ON_EXTERNAL_SAVE) {
+            DialogUtil.instantiate(getActivity()).withTitle(getString(R.string.dialog_default_title_success)).withMessage(getString(R.string.fragment_photo_info_save_success)).show();
         }
         return returnInsertImage;
     }
 
     void shareImage() {
-        String returnInsertImage = saveImageToGallery(20);
+        if(getView() == null) {
+            return;
+        }
+        String returnInsertImage = saveImageToGallery(REQUEST_CODE_PERMISSION_WRITE_ON_EXTERNAL_SHARE);
         if(returnInsertImage == null) {
             return;
         }
@@ -257,19 +277,22 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
         shareIntent.setType("image/*");
         shareIntent.putExtra(Intent.EXTRA_STREAM,imageUri);
-        shareIntent.putExtra(Intent.EXTRA_TEXT,"Hey i have attached this image");
-        Intent chooser=Intent.createChooser(shareIntent,"Send Image");
+        shareIntent.putExtra(Intent.EXTRA_TEXT,getString(R.string.fragment_photo_info_share_text));
+        Intent chooser=Intent.createChooser(shareIntent,getString(R.string.fragment_photo_info_share_chooser_text));
         try {
             startActivity(chooser);
         } catch (ActivityNotFoundException ex) {
             ex.printStackTrace();
-            DialogUtil.instantiate(getActivity()).withMessage("Sorry, can't find any app to solve this action!").show();
+            DialogUtil.instantiate(getActivity()).withMessage(getString(R.string.fragment_photo_info_dialog_message_no_app_action)).show();
             Button buttonShare = (Button) getView().findViewById(R.id.buttonShare);
             buttonShare.setVisibility(View.INVISIBLE);
         }
     }
 
     void openImageInBrowser() {
+        if(getView() == null) {
+            return;
+        }
         Bundle bundleArgs = getArguments();
         String photoLink = bundleArgs.getString("photo_link");
         Intent launchBrowser = new Intent(Intent.ACTION_VIEW, Uri.parse(photoLink));
@@ -277,7 +300,7 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
             startActivity(launchBrowser);
         } catch (ActivityNotFoundException ex) {
             ex.printStackTrace();
-            DialogUtil.instantiate(getActivity()).withMessage("Sorry, can't find any app to solve this action!").show();
+            DialogUtil.instantiate(getActivity()).withMessage(getString(R.string.fragment_photo_info_dialog_message_no_app_action)).show();
             Button buttonOpen = (Button) getView().findViewById(R.id.buttonOpen);
             buttonOpen.setVisibility(View.INVISIBLE);
         }
@@ -286,7 +309,7 @@ public class FragmentPhotoInfo extends FragmentGeneric implements View.OnClickLi
     @Override
     public void onClick(View view) {
         if(view.getId() == R.id.buttonSave) {
-            saveImageToGallery(10);
+            saveImageToGallery(REQUEST_CODE_PERMISSION_WRITE_ON_EXTERNAL_SAVE);
         } else if(view.getId() == R.id.buttonShare) {
             shareImage();
         } else if(view.getId() == R.id.buttonOpen) {

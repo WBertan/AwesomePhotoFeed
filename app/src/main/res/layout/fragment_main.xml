@@ -15,7 +15,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:hint="Search"
+        android:hint="@string/fragment_main_search_hint"
         android:maxLines="1"
         android:inputType="textFilter"
         android:imeActionLabel="EXPLORE"

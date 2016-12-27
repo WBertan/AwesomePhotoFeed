@@ -47,7 +47,7 @@ public class DialogUtil extends Dialog {
             getWindow().setBackgroundDrawableResource(R.color.apptheme_dialogOutsideBackground);
         }
         mContext = aContext;
-        mTitle = mContext.getString(R.string.dialog_default_title);
+        mTitle = mContext.getString(R.string.dialog_default_title_fail);
         mMessage = null;
         mOkTextButton = mContext.getString(R.string.dialog_default_button_text_ok);
         mYesTextButton = mContext.getString(R.string.dialog_default_button_text_yes);

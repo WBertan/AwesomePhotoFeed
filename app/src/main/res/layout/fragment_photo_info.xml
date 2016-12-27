@@ -47,9 +47,9 @@
 
     <View style="@style/DividerAppTheme"
         android:id="@+id/divider"
-        app:layout_constraintTop_toBottomOf="@+id/guideline"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/guideline" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycleViewPhotoInfo"
@@ -57,39 +57,42 @@
         android:layout_height="0dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/guideline4"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSave"
         app:layout_constraintTop_toBottomOf="@+id/divider"/>
 
     <Button
         android:id="@+id/buttonSave"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintRight_toRightOf="@+id/guideline2"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/guideline4"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:drawableStart="@android:drawable/ic_menu_save"
-        android:text="Save"/>
+        android:layout_marginBottom="5dp"
+        android:drawableTop="@android:drawable/ic_menu_save"
+        android:text="@string/fragment_photo_info_button_save_text"
+        app:layout_constraintRight_toLeftOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <Button
         android:id="@+id/buttonShare"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintRight_toRightOf="@+id/guideline3"
+        android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/guideline4"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:drawableStart="@android:drawable/ic_menu_share"
-        android:text="Share"/>
+        android:layout_marginBottom="5dp"
+        android:drawableTop="@android:drawable/ic_menu_share"
+        android:text="@string/fragment_photo_info_button_share_text"
+        app:layout_constraintRight_toLeftOf="@+id/guideline3"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
 
     <Button
         android:id="@+id/buttonOpen"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="@+id/guideline3"
-        app:layout_constraintTop_toBottomOf="@+id/guideline4"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:drawableStart="@android:drawable/ic_menu_view"
-        android:text="Open"/>
+        android:layout_marginBottom="5dp"
+        android:drawableTop="@android:drawable/ic_menu_view"
+        android:text="@string/fragment_photo_info_button_open_text"
+        app:layout_constraintTop_toTopOf="@+id/guideline4" />
 </android.support.constraint.ConstraintLayout>
